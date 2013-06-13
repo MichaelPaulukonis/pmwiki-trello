@@ -68,19 +68,20 @@ body {
     padding: 2px;
 }";
 
+global $trelloApiKey;
 
-$HTMLFooterFmt['trello'] = '<script src="https://api.trello.com/1/client.js?key=ab727d13bf9e068cc07d151cad4cb4e5"></script>
+
+// load jQuery based on http://stackoverflow.com/a/10728220/41153
+$HTMLFooterFmt['trello'] = '<script>window.jQuery || document.write("<script src=\'js/jquery-1.10.1.min.js\'>\x3C/script>")</script>
+<script src="https://api.trello.com/1/client.js?key=$trelloApiKey"></script>
 <script type="text/javascript">
 /*
-NOTE: The Trello client library has been included as a Managed Resource.  To include the client library in your own code, you would include jQuery and then
-
-<script src="https://api.trello.com/1/client.js?key=your_application_key">...
+based on original code at http://jsfiddle.net/nNesx/
 
 See https://trello.com/docs for a list of available API URLs
 
 The API development board is at https://trello.com/api
 
-The &dummy=.js part of the managed resource URL is required per http://doc.jsfiddle.net/basic/introduction.html#add-resources
 */
 
 var onAuthorize = function() {
