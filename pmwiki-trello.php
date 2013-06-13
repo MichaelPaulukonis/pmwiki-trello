@@ -72,7 +72,7 @@ global $trelloApiKey;
 
 
 // load jQuery based on http://stackoverflow.com/a/10728220/41153
-$HTMLFooterFmt['trello'] = '<script>window.jQuery || document.write("<script src=\'js/jquery-1.10.1.min.js\'>\x3C/script>")</script>
+$HTMLFooterFmt['trello'] = '<script>window.jQuery || document.write("<script src=\'//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js\'>\x3C/script>")</script>
 <script src="https://api.trello.com/1/client.js?key=$trelloApiKey"></script>
 <script type="text/javascript">
 /*
