@@ -19,9 +19,9 @@ Markup('trello', 'directives',
 
 function TrelloMarkup($args) {
 
-        $opt = ParseArgs($args);
+    $opt = ParseArgs($args);
 
-        $html = '<div id="loggedout">
+    $html = '<div id="loggedout">
     <a id="connectLink" href="#">Connect To Trello</a>
 </div>
 
@@ -34,39 +34,44 @@ function TrelloMarkup($args) {
     <div id="output"></div>
 </div> ';
 
-        return $html;
+    return $html;
 
 }
 
-$HTMLStylesFmt['trello'] = "
-body {
-    font-family: arial;
-    font-size: 12px;
-}
+#"<link href='$SkinDirUrl/css/darkstrap.css' rel='stylesheet'>
+# <script type="text/javascript" src="$PubDirUrl/pmwiki-trello/pmwiki-trello.js"></script>';
+#"<link href='$PubDirUrl/pmwiki-trello/pmwiki-trello.css' rel='stylesheet'>
 
-#loggedout {
-    text-align: center;
-    font-size: 20px;
-    padding-top: 30px;
-}
-#loggedin {
-    display: none;
-}
+$HTMLHeaderFmt['trello'] = "<link href='$PubDirUrl/pmwiki-trello/pmwiki-trello.css' rel='stylesheet'>";
+/* $HTMLStylesFmt['trello'] = " */
+/* body { */
+/*     font-family: arial; */
+/*     font-size: 12px; */
+/* } */
 
-#header {
-    padding: 4px;
-    border-bottom: 1px solid #000;
-    background: #eee;
-}
+/* #loggedout { */
+/*     text-align: center; */
+/*     font-size: 20px; */
+/*     padding-top: 30px; */
+/* } */
+/* #loggedin { */
+/*     display: none; */
+/* } */
 
-#output {
-    padding: 4px;
-}
+/* #header { */
+/*     padding: 4px; */
+/*     border-bottom: 1px solid #000; */
+/*     background: #eee; */
+/* } */
 
-.card {
-    display: block;
-    padding: 2px;
-}";
+/* #output { */
+/*     padding: 4px; */
+/* } */
+
+/* .card { */
+/*     display: block; */
+/*     padding: 2px; */
+/* }"; */
 
 global $trelloApiKey;
 
@@ -74,70 +79,6 @@ global $trelloApiKey;
 // load jQuery based on http://stackoverflow.com/a/10728220/41153
 $HTMLFooterFmt['trello'] = '<script>window.jQuery || document.write("<script src=\'//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js\'>\x3C/script>")</script>
 <script src="https://api.trello.com/1/client.js?key=$trelloApiKey"></script>
-<script type="text/javascript">
-/*
-based on original code at http://jsfiddle.net/nNesx/
-
-See https://trello.com/docs for a list of available API URLs
-
-The API development board is at https://trello.com/api
-
-*/
-
-var onAuthorize = function() {
-    updateLoggedIn();
-    $("#output").empty();
-
-    Trello.members.get("me", function(member){
-        $("#fullName").text(member.fullName);
-
-        var $cards = $("<div>")
-            .text("Loading Cards...")
-            .appendTo("#output");
-
-        // Output a list of all of the cards that the member
-        // is assigned to
-        Trello.get("members/me/cards", function(cards) {
-            $cards.empty();
-            $.each(cards, function(ix, card) {
-                $("<a>")
-                .attr({href: card.url, target: "trello"})
-                .addClass("card")
-                .text(card.name)
-                .appendTo($cards);
-            });
-        });
-    });
-
-};
-
-var updateLoggedIn = function() {
-    var isLoggedIn = Trello.authorized();
-    $("#loggedout").toggle(!isLoggedIn);
-    $("#loggedin").toggle(isLoggedIn);
-};
-
-var logout = function() {
-    Trello.deauthorize();
-    updateLoggedIn();
-};
-
-Trello.authorize({
-    interactive:false,
-    success: onAuthorize
-});
-
-$("#connectLink")
-.click(function(){
-    Trello.authorize({
-        type: "popup",
-        success: onAuthorize
-    })
-});
-
-$("#disconnect").click(logout);
-
-</script>';
-
+<script type="text/javascript" src="$PubDirUrl/pmwiki-trello/pmwiki-trello.js"></script>';
 
 ?>
