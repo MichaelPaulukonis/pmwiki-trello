@@ -10,7 +10,7 @@
   (at your option) any later version.
 */
 
-$RecipeInfo['pmwiki-trello']['Version'] = '2013-06-11';
+$RecipeInfo['pmwiki-trello']['Version'] = '2013-06-14';
 
 
 Markup('trello', 'directives',
@@ -38,40 +38,8 @@ function TrelloMarkup($args) {
 
 }
 
-#"<link href='$SkinDirUrl/css/darkstrap.css' rel='stylesheet'>
-# <script type="text/javascript" src="$PubDirUrl/pmwiki-trello/pmwiki-trello.js"></script>';
-#"<link href='$PubDirUrl/pmwiki-trello/pmwiki-trello.css' rel='stylesheet'>
 
 $HTMLHeaderFmt['trello'] = "<link href='$PubDirUrl/pmwiki-trello/pmwiki-trello.css' rel='stylesheet'>";
-/* $HTMLStylesFmt['trello'] = " */
-/* body { */
-/*     font-family: arial; */
-/*     font-size: 12px; */
-/* } */
-
-/* #loggedout { */
-/*     text-align: center; */
-/*     font-size: 20px; */
-/*     padding-top: 30px; */
-/* } */
-/* #loggedin { */
-/*     display: none; */
-/* } */
-
-/* #header { */
-/*     padding: 4px; */
-/*     border-bottom: 1px solid #000; */
-/*     background: #eee; */
-/* } */
-
-/* #output { */
-/*     padding: 4px; */
-/* } */
-
-/* .card { */
-/*     display: block; */
-/*     padding: 2px; */
-/* }"; */
 
 global $trelloApiKey;
 

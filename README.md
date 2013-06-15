@@ -5,7 +5,6 @@ Simple [Trello](https://trello.com) integration for [PmWiki](http://www.pmwiki.o
 
 Currently, a bare-bones markup that uses the Trello-provided demo app [Reading all the cards a member is assigned to](http://jsfiddle.net/nNesx/).
 
-As of 2013.06.11 this is a proof-of-concept, with plans for expansion.
 
 
 ## Installation
@@ -16,11 +15,15 @@ Download the project, copy `pub/pmwiki-trello` to your pub folder, copy `pmwiki-
     include_once('$FarmD/cookbook/pmwiki-trello.php');
 
 
+To use, apply the markup `(:trello:)` where you want it to appear. It might work best in a side-bar.
+
+
 ## Roadmap
 - Better documentation on API-key
 - Better handling of inputting API-key
 - Better CSS
-- List Boards
+- List cards by Board
+- Board filter (ie, show only cards from selected boards)
 - Add Card
 
 
