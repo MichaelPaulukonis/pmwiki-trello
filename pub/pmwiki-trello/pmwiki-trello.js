@@ -22,18 +22,47 @@ var pmwikitrello = function() {
                 .text("Loading Cards...")
                 .appendTo("#output");
 
-            // Output a list of all of the cards that the member
+            var boards = {};
+            
+            // will need to grab these values
+            // construct a map of id:name
+            // THEN grab the cards
+            // since cards only have the ID (idBoard) available           
+            
+            var getBoards = function(next) {
+                
+                Trello.get("members/me/boards", { fields: "name, id" }, function(brds) {
+                    
+                    for (var i=0; i < brds.length; i++) {
+                        boards[brds[i].id] = brds[i].name;
+                    }
+                    
+                    next();
+                    
+                });
+                
+            };
+            
+            // Output a list of all of the cards that the member 
             // is assigned to
-            Trello.get("members/me/cards", function(cards) {
-                $cards.empty();
-                $.each(cards, function(ix, card) {
-                    $('<li>').append($("<a>")
-                                     .attr({href: card.url, target: "trello"})
-                                     .addClass("card")
-                                     .text(card.name))
+            var getCards = function() {
+                Trello.get("members/me/cards", function(cards) {
+                    $cards.empty();
+                    $.each(cards, function(ix, card) {
+                        //debugger;
+                        // something more complicated.
+                        // a new UL for each board?
+                        $('<li>').append($("<a>")
+                                         .attr({href: card.url, target: "trello"})
+                                         .addClass("card")
+                                         .text(boards[card.idBoard] + ' - ' +     card.name))
                             .appendTo($cards);
                     });
-            });
+                });
+            };
+            
+            getBoards(getCards);
+                
         });
 
     };
