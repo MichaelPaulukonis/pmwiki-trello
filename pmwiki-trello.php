@@ -26,7 +26,7 @@ function TrelloMarkup($args) {
 </div>
 
 <div id="loggedin">
-    <div id="header">
+    <div id="trelloheader">
         Logged in to Trello as <span id="fullName"></span>
         <a id="disconnect" href="#">Log Out</a>
     </div>

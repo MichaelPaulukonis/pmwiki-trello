@@ -48,22 +48,39 @@ var pmwikitrello = function() {
             var getCards = function() {
                 Trello.get("members/me/cards", function(cards) {
                     $cards.empty();
+                    var list = {};                
+                    
                     $.each(cards, function(ix, card) {
-                        //debugger;
-                        // something more complicated.
-                        // a new UL for each board?
-                        $('<li>').append($("<a>")
-                                         .attr({href: card.url, target: "trello"})
-                                         .addClass("card")
-                                         .text(boards[card.idBoard] + ' - ' +     card.name))
-                            .appendTo($cards);
+                        var boardName = boards[card.idBoard];
+                        var item = $('<li>').append($("<a>")
+                                        .attr({href: card.url, target: "trello"})
+                                        .addClass("card")
+                                        .text(card.name));
+                        
+                        if (!list[boardName]) list[boardName] = []; // init new board in list
+                        list[boardName].push(item);
                     });
+                    
+                    // add items in the list to cards....
+                    // TODO: filtering should be.... above? when we capture?
+                    // yeah, probably
+                    $.each(list, function(board) {
+                        var $boardlist = $('<li/>').append(
+                            $('<h3/>').addClass('board-title').text(board)).append(
+                            $('<ul>').addClass('board').append(
+                                $.each(list[board], function(ix, item) {
+                                    item.appendTo($boardlist);
+                                })));
+
+                        $boardlist.appendTo($cards);
+                    });
+                    
                 });
             };
             
             getBoards(getCards);
-                
-        });
+            
+            });
 
     };
 
