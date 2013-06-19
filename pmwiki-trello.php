@@ -10,7 +10,7 @@
   (at your option) any later version.
 */
 
-$RecipeInfo['pmwiki-trello']['Version'] = '2013-06-14';
+$RecipeInfo['pmwiki-trello']['Version'] = '2013-06-18';
 
 
 Markup('trello', 'directives',
