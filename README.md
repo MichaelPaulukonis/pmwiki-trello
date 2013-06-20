@@ -14,7 +14,7 @@ Download [the project zip](https://github.com/MichaelPaulukonis/pmwiki-trello/ar
 
 
 ## Usage
-* To use, apply the markup `(:trello:)` without any arguemments shows a list of all cards, sorted by board, where you want it to appear. It might work best in a side-bar.
+* To use, apply the markup `(:trello:)` without any arguements shows a list of all cards, sorted by board, where you want it to appear. It might work best in a side-bar.
 * `(:trello board1,board2 +board3 include="board4,board5,board six" :)` to display only cards for the named boards (case-sensitive). Quotes are optional, unless there are spaces in the board-name.
 * `(:trello -board1 exclude=board3,board5,"board six" :)` to display cards for all boards **except** as indicated.
 
