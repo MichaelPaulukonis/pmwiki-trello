@@ -23,14 +23,17 @@ var pmwikitrello = function() {
                 .appendTo("#output");
 
             var boards = {};
-            
-            // will need to grab these values
-            // construct a map of id:name
-            // THEN grab the cards
-            // since cards only have the ID (idBoard) available           
+            var includeList = trelloinclude.split(',');
+            var excludeList = trelloexclude.split(',');
+            // crude trap for "split on an empty string returns an array of 1 empty string"
+            if (includeList[0] === "") includeList = [];
+            if (excludeList[0] === "") excludeList = [];
             
             var getBoards = function(next) {
-                
+
+                // possible there is a built-in filter?
+                // per https://trello.com/docs/api/member/index.html#get-1-members-idmember-or-username-boards-filter
+                // but I'll be d****d if I can make heads or tails of the Trello API docs.
                 Trello.get("members/me/boards", { fields: "name, id" }, function(brds) {
                     
                     for (var i=0; i < brds.length; i++) {
@@ -43,8 +46,8 @@ var pmwikitrello = function() {
                 
             };
             
-            // Output a list of all of the cards that the member 
-            // is assigned to
+            // Output a list of all of the cards that the member is assigned to
+            // and that match the filters
             var getCards = function() {
                 Trello.get("members/me/cards", function(cards) {
                     $cards.empty();
@@ -56,14 +59,15 @@ var pmwikitrello = function() {
                                         .attr({href: card.url, target: "trello"})
                                         .addClass("card")
                                         .text(card.name));
-                        
-                        if (!list[boardName]) list[boardName] = []; // init new board in list
-                        list[boardName].push(item);
+                        // if includeList has (matching) entries, only matching entries will be displayed
+                        var included = (includeList.length === 0 || ($.inArray(boardName, includeList) > -1));
+                        var excluded = ($.inArray(boardName, excludeList) > -1);
+                        if (included && !excluded) {
+                            if (!list[boardName]) list[boardName] = []; // init new board in list
+                            list[boardName].push(item);
+                        }
                     });
                     
-                    // add items in the list to cards....
-                    // TODO: filtering should be.... above? when we capture?
-                    // yeah, probably
                     $.each(list, function(board) {
                         var $boardlist = $('<li/>').append(
                             $('<h3/>').addClass('board-title').text(board)).append(

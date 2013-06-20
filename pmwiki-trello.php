@@ -10,16 +10,30 @@
   (at your option) any later version.
 */
 
-$RecipeInfo['pmwiki-trello']['Version'] = '2013-06-18';
+$RecipeInfo['pmwiki-trello']['Version'] = '2013-06-19';
 
+
+global $trelloInclude, $trelloExclude;
 
 Markup('trello', 'directives',
-       '/\\(:trello\\s*(.*?):\\)/ei',
-       "TrelloMarkup(\$pagename, PSS('$1'))");
+       '/\\(:trello(\\s+.*?)?:\\)/ei',
+       "TrelloMarkup(PSS('$1'))");
+
 
 function TrelloMarkup($args) {
 
     $opt = ParseArgs($args);
+
+    $trelloInclude = array_merge((array)@$opt[''], (array)@$opt['+'], (array)@$opt['include']);
+    $trelloExclude = array_merge((array)@$opt['-'], (array)@$opt['exclude']);
+    # this seems excessive
+    $trelloInclude = array_map('trim', explode(',', implode(',', $trelloInclude)));
+    $trelloExclude = array_map('trim', explode(',', implode(',', $trelloExclude)));
+
+    # TODO: the push of the includes/excludes to the is a bit crude?
+    # TODO: some sort of notice that there are boards not included?
+    # particular if ALL boards are excluded?
+    # and, I suppose, even displaying THAT should be an option....
 
     $html = '<div id="loggedout">
     <a id="connectLink" href="#">Connect To Trello</a>
@@ -32,6 +46,9 @@ function TrelloMarkup($args) {
     </div>
 
     <div id="output"></div>
+    <script type="text/javascript">var trelloinclude = "'.implode(',', $trelloInclude).'";
+var trelloexclude = "'.implode(',', $trelloExclude).'";</script>
+
 </div> ';
 
     return $html;
