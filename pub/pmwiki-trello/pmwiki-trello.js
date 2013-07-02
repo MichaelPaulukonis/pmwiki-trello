@@ -13,14 +13,14 @@ var pmwikitrello = function() {
 
     var onAuthorize = function() {
         updateLoggedIn();
-        $("#output").empty();
+        $(".output").empty();
 
         Trello.members.get("me", function(member){
-            $("#fullName").text(member.fullName);
+            $(".fullName").text(member.fullName);
 
             var $cards = $("<ul>")
                 .text("Loading Cards...")
-                .appendTo("#output");
+                .appendTo(".output");
 
             var boards = {};
             var includeList = trelloinclude.split(',');
@@ -90,8 +90,8 @@ var pmwikitrello = function() {
 
     var updateLoggedIn = function() {
         var isLoggedIn = Trello.authorized();
-        $("#loggedout").toggle(!isLoggedIn);
-        $("#loggedin").toggle(isLoggedIn);
+        $(".loggedout").toggle(!isLoggedIn);
+        $(".loggedin").toggle(isLoggedIn);
     };
 
     var logout = function() {
@@ -104,7 +104,7 @@ var pmwikitrello = function() {
         success: onAuthorize
     });
 
-    $("#connectLink")
+    $(".connectLink")
         .click(function(){
             Trello.authorize({
                 type: "popup",
@@ -112,6 +112,6 @@ var pmwikitrello = function() {
             });
         });
 
-    $("#disconnect").click(logout);
+    $(".disconnect").click(logout);
 
 }();

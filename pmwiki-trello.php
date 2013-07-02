@@ -35,21 +35,23 @@ function TrelloMarkup($args) {
     # particular if ALL boards are excluded?
     # and, I suppose, even displaying THAT should be an option....
 
-    $html = '<div id="loggedout">
-    <a id="connectLink" href="#">Connect To Trello</a>
+    $prefix = uniqid(rand());
+
+    $html = '<div id="loggedout" class="loggedout">
+    <a id="connectLink" class="connectLink" data-prefix="'.$prefix.'" href="#">Connect To Trello</a>
 </div>
 
-<div id="loggedin">
-    <div id="trelloheader">
-        Logged in to Trello as <span id="fullName"></span>
-        <a id="disconnect" href="#">Log Out</a>
+<div id="loggedin" class="loggedin" data-prefix="'.$prefix.'" >
+    <div id="trelloheader" class="trelloheader" data-prefix="'.$prefix.'" >
+        Logged in to Trello as <span id="fullName" class="fullName" data-prefix="'.$prefix.'" ></span>
+        <a id="disconnect" class="disconnect" data-prefix="'.$prefix.'" href="#">Log Out</a>
     </div>
 
-    <div id="output"></div>
+    <div id="output" class="output" data-prefix="'.$prefix.'" ></div>
     <script type="text/javascript">var trelloinclude = "'.implode(',', $trelloInclude).'";
 var trelloexclude = "'.implode(',', $trelloExclude).'";</script>
 
-</div> ';
+</div>';
 
     return $html;
 
