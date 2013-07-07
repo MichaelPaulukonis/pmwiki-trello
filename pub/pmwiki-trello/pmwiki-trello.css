@@ -37,8 +37,7 @@
     padding: 2px;
 }
 
-
-.board-title {
-    font-size: 110%;
-    font-weight: 700;
-}
+.board-title>a:link    { text-decoration: none; }
+.board-title>a:visited { text-decoration: none; }
+.board-title>a:active  { text-decoration: none; }
+.board-title>a:hover   { text-decoration: underline; }

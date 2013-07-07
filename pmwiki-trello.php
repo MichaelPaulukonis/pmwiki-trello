@@ -37,6 +37,10 @@ function TrelloMarkup($args) {
 
     $prefix = uniqid(rand());
 
+
+    # the include/exclude directive needs to be instance-specific
+    # so, make it part of the html directly, instead of the js
+    # and make the js read it
     $html = '<div id="loggedout" class="loggedout">
     <a id="connectLink" class="connectLink" data-prefix="'.$prefix.'" href="#">Connect To Trello</a>
 </div>
