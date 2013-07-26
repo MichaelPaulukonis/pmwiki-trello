@@ -36,7 +36,7 @@ var pmwikitrello = function() {
                 // possible there is a built-in filter?
                 // per https://trello.com/docs/api/member/index.html#get-1-members-idmember-or-username-boards-filter
                 // but I'll be d****d if I can make heads or tails of the Trello API docs.
-                //Trello.get("members/me/boards", { fields: "name, id, url" }, function(brds) {
+                // Trello.get("members/me/boards", { fields: "name, id, url" }, function(brds) {
                 // the filter with name, id, url failed to retrieve the url. ???!??
                 Trello.get("members/me/boards", { }, function(brds) { // unfiltered list (all fields)
 
@@ -50,8 +50,8 @@ var pmwikitrello = function() {
                 
             };
             
-            // Output a list of all of the cards that the member is assigned to
-            // and that match the filters
+            // get all cards assigned to user
+            // and associate with board
             var getCards = function(next) {
 
                 Trello.get("members/me/cards", function(cards) {
@@ -66,12 +66,6 @@ var pmwikitrello = function() {
                         if (!list[card.idBoard]) { list[card.idBoard] = []; } // init new board in list
                         list[card.idBoard].push(item);
                         
-                        // var included = (includeList.length === 0 || ($.inArray(boardName, includeList) > -1));
-                        // var excluded  = ($.inArray(boardName, excludeList) > -1);
-                        // if (included && !excluded) {
-                        //     if (!list[card.idBoard]) { list[card.idBoard] = []; } // init new board in list
-                        //     list[card.idBoard].push(item);
-                        // }
                     });
 
                     next(list);
@@ -83,36 +77,37 @@ var pmwikitrello = function() {
 
                 $.each(list, function(board) {
 
-                        var included = (includeList.length === 0 || ($.inArray(boards[board].name, includeList) > -1));
-                        var excluded = ($.inArray(boards[board].name, excludeList) > -1);
-                        if (!included && excluded) {
-                            return true;
-                        }
-                        
-                        var $sublist = $('<ul>').addClass('board');
-                        $.each(list[board], function(ix, item) {
-                            var l = $('<li>').append($("<a>")
-                                            .attr({href: item.href, target: "trello"})
-                                            .addClass("card")
-                                            .text(item.name));
+                    var included = (includeList.length === 0 || ($.inArray(boards[board].name, includeList) > -1));
+                    var excluded = ($.inArray(boards[board].name, excludeList) > -1);
+                    if (!included || excluded) {
+                        return true;
+                    }
+                    
+                    var $sublist = $('<ul>').addClass('board');
+                    $.each(list[board], function(ix, item) {
+                        var l = $('<li>').append($("<a>")
+                                                 .attr({href: item.href, target: "trello"})
+                                                 .addClass("card")
+                                                 .text(item.name));
 
-                            l.appendTo($sublist);
-                        });
-                        
-                        // $sublist is a child of the H3 tag, instead of a sibling
-                        var $boardlist = $('<li/>').append(
-                            $('<h3/>').addClass('board-title')
-                            .html($('<a>').attr({href: boards[board].url, target: "trello"}).text(boards[board].name)))
-                            .append($sublist); 
-                        
-                        $boardlist.appendTo($cards);
+                        l.appendTo($sublist);
                     });
+                    
+                    var $boardlist = $('<li/>').append(
+                        $('<h3/>').addClass('board-title')
+                            .html($('<a>').attr({href: boards[board].url, target: "trello"}).text(boards[board].name)))
+                        .append($sublist); 
+                    
+                    $boardlist.appendTo($cards);
+
+                    return false;
+
+                });
             };
             
-            // TODO: getCards currently gets all cards AND applies include/exclude rules AND outputs the cards
             getBoards(getCards(outputCards));
             
-            });
+        });
 
     };
 
