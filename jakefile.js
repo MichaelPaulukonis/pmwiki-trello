@@ -9,11 +9,12 @@
 
 var path = require('path');
 
-var target = "d:/projects/pmwiki-trello";
+// it would be nicer if this were in (an) external config(s)
+var target = "c:/dev/xampp/htdocs/projects/pmwikitest/";
+
 
 desc('This is a simple complete-project copy.');
 task('default', [], function () {
-    jake.cpR("pmwiki-trello.php", target);
-    jake.cpR("pmwiki-trello.jakefile.js", target);
-    jake.cpR("../pub/pmwiki-trello/", path.join(target, "pub"));
+    jake.cpR("pmwiki-trello.php", path.join(target, "cookbook"));
+    jake.cpR("pub/pmwiki-trello/", path.join(target, "pub"));
     });

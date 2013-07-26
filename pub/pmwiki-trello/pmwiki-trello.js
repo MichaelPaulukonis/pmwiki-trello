@@ -16,6 +16,7 @@ var pmwikitrello = function() {
         $(".output").empty();
 
         Trello.members.get("me", function(member){
+
             $(".fullName").text(member.fullName);
 
             var $cards = $("<ul>")
@@ -23,6 +24,7 @@ var pmwikitrello = function() {
                 .appendTo(".output");
 
             var boards = {};
+            // defined in external script. tsk tsk. will be retreived different....
             var includeList = trelloinclude.split(',');
             var excludeList = trelloexclude.split(',');
             // crude trap for "split on an empty string returns an array of 1 empty string"
@@ -37,7 +39,7 @@ var pmwikitrello = function() {
                 //Trello.get("members/me/boards", { fields: "name, id, url" }, function(brds) {
                 // the filter with name, id, url failed to retrieve the url. ???!??
                 Trello.get("members/me/boards", { }, function(brds) { // unfiltered list (all fields)
-                    debugger;
+
                     for (var i=0; i < brds.length; i++) {
                         boards[brds[i].id] = {name: brds[i].name, url: brds[i].url};
                     }
@@ -50,23 +52,42 @@ var pmwikitrello = function() {
             
             // Output a list of all of the cards that the member is assigned to
             // and that match the filters
-            var getCards = function() {
+            var getCards = function(next) {
+
                 Trello.get("members/me/cards", function(cards) {
+
                     $cards.empty();
                     var list = {};                
                     
                     $.each(cards, function(ix, card) {
                         var boardName = boards[card.idBoard].name;                       
                         var item = { href: card.url, name: card.name };                       
-                        var included = (includeList.length === 0 || ($.inArray(boardName, includeList) > -1));
-                        var excluded = ($.inArray(boardName, excludeList) > -1);
-                        if (included && !excluded) {
-                            if (!list[card.idBoard]) { list[card.idBoard] = []; } // init new board in list
-                            list[card.idBoard].push(item);
-                        }
+
+                        if (!list[card.idBoard]) { list[card.idBoard] = []; } // init new board in list
+                        list[card.idBoard].push(item);
+                        
+                        // var included = (includeList.length === 0 || ($.inArray(boardName, includeList) > -1));
+                        // var excluded  = ($.inArray(boardName, excludeList) > -1);
+                        // if (included && !excluded) {
+                        //     if (!list[card.idBoard]) { list[card.idBoard] = []; } // init new board in list
+                        //     list[card.idBoard].push(item);
+                        // }
                     });
+
+                    next(list);
                     
-                    $.each(list, function(board) {
+                });
+            };
+
+            var outputCards = function(list) {
+
+                $.each(list, function(board) {
+
+                        var included = (includeList.length === 0 || ($.inArray(boards[board].name, includeList) > -1));
+                        var excluded = ($.inArray(boards[board].name, excludeList) > -1);
+                        if (!included && excluded) {
+                            return true;
+                        }
                         
                         var $sublist = $('<ul>').addClass('board');
                         $.each(list[board], function(ix, item) {
@@ -86,11 +107,10 @@ var pmwikitrello = function() {
                         
                         $boardlist.appendTo($cards);
                     });
-                    
-                });
             };
             
-            getBoards(getCards);
+            // TODO: getCards currently gets all cards AND applies include/exclude rules AND outputs the cards
+            getBoards(getCards(outputCards));
             
             });
 
