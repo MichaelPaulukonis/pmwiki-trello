@@ -12,10 +12,11 @@
 var pmwikitrello = function() {
 
     var onAuthorize = function() {
+
         updateLoggedIn();
         $(".output").empty();
 
-        Trello.members.get("me", function(member){
+        var processMember = function(member) {
 
             $(".fullName").text(member.fullName);
 
@@ -25,12 +26,16 @@ var pmwikitrello = function() {
 
             var boards = {};
             // defined in external script. tsk tsk. will be retreived different....
+            // TODO: place into parameters and retrieve....
+            // now available in the specific data-prefix as data-include and data-exclude
+            // but... we don't have the prefix known, here.
+            // so. we should be looping through all the trello instances, shouldn't we....
             var includeList = trelloinclude.split(',');
             var excludeList = trelloexclude.split(',');
             // crude trap for "split on an empty string returns an array of 1 empty string"
             if (includeList[0] === "") includeList = [];
             if (excludeList[0] === "") excludeList = [];
-            
+
             var getBoards = function(next) {
 
                 // possible there is a built-in filter?
@@ -43,13 +48,13 @@ var pmwikitrello = function() {
                     for (var i=0; i < brds.length; i++) {
                         boards[brds[i].id] = {name: brds[i].name, url: brds[i].url};
                     }
-                    
+
                     next();
-                    
+
                 });
-                
+
             };
-            
+
             // get all cards assigned to user
             // and associate with board
             var getCards = function(next) {
@@ -57,19 +62,19 @@ var pmwikitrello = function() {
                 Trello.get("members/me/cards", function(cards) {
 
                     $cards.empty();
-                    var list = {};                
-                    
+                    var list = {};
+
                     $.each(cards, function(ix, card) {
-                        var boardName = boards[card.idBoard].name;                       
-                        var item = { href: card.url, name: card.name };                       
+                        var boardName = boards[card.idBoard].name;
+                        var item = { href: card.url, name: card.name };
 
                         if (!list[card.idBoard]) { list[card.idBoard] = []; } // init new board in list
                         list[card.idBoard].push(item);
-                        
+
                     });
 
                     next(list);
-                    
+
                 });
             };
 
@@ -82,7 +87,7 @@ var pmwikitrello = function() {
                     if (!included || excluded) {
                         return true;
                     }
-                    
+
                     var $sublist = $('<ul>').addClass('board');
                     $.each(list[board], function(ix, item) {
                         var l = $('<li>').append($("<a>")
@@ -92,22 +97,24 @@ var pmwikitrello = function() {
 
                         l.appendTo($sublist);
                     });
-                    
+
                     var $boardlist = $('<li/>').append(
                         $('<h3/>').addClass('board-title')
                             .html($('<a>').attr({href: boards[board].url, target: "trello"}).text(boards[board].name)))
-                        .append($sublist); 
-                    
+                        .append($sublist);
+
                     $boardlist.appendTo($cards);
 
-                    return false;
+                    return true; // continue each as normal
 
                 });
             };
-            
-            getBoards(getCards(outputCards));
-            
-        });
+
+            getBoards(function() { getCards(outputCards); });
+
+        };
+
+        Trello.members.get("me", function(member) { processMember(member); } );
 
     };
 
@@ -123,7 +130,7 @@ var pmwikitrello = function() {
     };
 
     Trello.authorize({
-        interactive:false,
+        interactive: false,
         success: onAuthorize
     });
 

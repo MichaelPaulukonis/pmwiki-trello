@@ -51,7 +51,7 @@ function TrelloMarkup($args) {
         <a id="disconnect" class="disconnect" data-prefix="'.$prefix.'" href="#">Log Out</a>
     </div>
 
-    <div id="output" class="output" data-prefix="'.$prefix.'" ></div>
+    <div id="output" class="output" data-prefix="'.$prefix.'" data-include="'.implode(',', $trelloInclude).'" data-exclude="'.implode(',', $trelloExclude).'" ></div>
     <script type="text/javascript">var trelloinclude = "'.implode(',', $trelloInclude).'";
 var trelloexclude = "'.implode(',', $trelloExclude).'";</script>
 
