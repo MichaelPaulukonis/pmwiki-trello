@@ -41,21 +41,20 @@ function TrelloMarkup($args) {
     # the include/exclude directive needs to be instance-specific
     # so, make it part of the html directly, instead of the js
     # and make the js read it
-    $html = '<div id="loggedout" class="loggedout">
-    <a id="connectLink" class="connectLink" data-prefix="'.$prefix.'" href="#">Connect To Trello</a>
+    $html = "<div id='loggedout-$prefix' class='loggedout'>
+    <a id='connectLink-$prefix' class='connectLink' data-prefix='$prefix' href='#'>Connect To Trello</a>
 </div>
-
-<div id="loggedin" class="loggedin" data-prefix="'.$prefix.'" >
-    <div id="trelloheader" class="trelloheader" data-prefix="'.$prefix.'" >
-        Logged in to Trello as <span id="fullName" class="fullName" data-prefix="'.$prefix.'" ></span>
-        <a id="disconnect" class="disconnect" data-prefix="'.$prefix.'" href="#">Log Out</a>
+    <div id='loggedin-$prefix' class='loggedin' data-prefix='$prefix' >
+    <div id='trelloheader-$prefix' class='trelloheader' data-prefix='$prefix' >
+        Logged in to Trello as <span id='fullName' class='fullName' data-prefix='$prefix' ></span>
+        <a id='disconnect-$prefix' class='disconnect' data-prefix='$prefix' href='#'>Log Out</a>
     </div>
 
-    <div id="output" class="output" data-prefix="'.$prefix.'" data-include="'.implode(',', $trelloInclude).'" data-exclude="'.implode(',', $trelloExclude).'" ></div>
-    <script type="text/javascript">var trelloinclude = "'.implode(',', $trelloInclude).'";
-var trelloexclude = "'.implode(',', $trelloExclude).'";</script>
+    <div id='output-$prefix' class='output' data-prefix='$prefix' data-include='".implode(',', $trelloInclude)."' data-exclude='".implode(',', $trelloExclude)."' ></div>
+    <script type='text/javascript'>var trelloinclude = '".implode(',', $trelloInclude)."';
+var trelloexclude = '".implode(',', $trelloExclude)."';</script>
 
-</div>';
+</div>";
 
     return $html;
 
