@@ -103,6 +103,8 @@ var pmwikitrello = function() {
                     .text("Loading Cards...")
                     .appendTo(".output");
 
+            debugger;
+
             var boards = {};
             // defined in external script. tsk tsk. will be retreived different....
             // TODO: place into parameters and retrieve....
@@ -115,8 +117,13 @@ var pmwikitrello = function() {
             if (includeList[0] === "") includeList = [];
             if (excludeList[0] === "") excludeList = [];
 
+            for (var i = 0; i < $cards.length; i++) {
 
-            getBoards(boards, $cards, includeList, excludeList);
+                var $these = $($cards[i]);
+
+                getBoards(boards, $these, includeList, excludeList);
+
+            };
 
         };
 
