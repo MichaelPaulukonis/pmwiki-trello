@@ -10,10 +10,12 @@
   (at your option) any later version.
 */
 
-$RecipeInfo['pmwiki-trello']['Version'] = '2013-06-19';
+/* $RecipeInfo['pmwiki-trello']['Version'] = '2013-06-19'; */
+$RecipeInfo['pmwiki-trello']['Version'] = '{{VERSION}}';
 
 
-global $trelloInclude, $trelloExclude;
+global $trelloInclude, $trelloExclude, $trelloApiKey;
+
 
 Markup('trello', 'directives',
        '/\\(:trello(\\s+.*?)?:\\)/ei',
@@ -62,8 +64,6 @@ var trelloexclude = '".implode(',', $trelloExclude)."';</script>
 
 
 $HTMLHeaderFmt['trello'] = "<link href='$PubDirUrl/pmwiki-trello/pmwiki-trello.css' rel='stylesheet'>";
-
-global $trelloApiKey;
 
 
 // load jQuery based on http://stackoverflow.com/a/10728220/41153

@@ -40,6 +40,7 @@ var pmwikitrello = function() {
 
         // get all cards assigned to user
         // and associate with board
+        // ugh. include/excludeLists are pass-through variables, only needed in outputCards
         var getCards = function($cards, boards, includeList, excludeList) {
 
             Trello.get("members/me/cards", function(cards) {
@@ -63,6 +64,9 @@ var pmwikitrello = function() {
 
         // TODO: ugh. that's a lot of params that keep getting passed around
         // but at least everything is now explicitly referenced
+        // TODO: _this_ is where we should be looping through the specific instances
+        //       and hitting each piece of markup uniquely
+        //       thus, _retrieving_ the specific include/exclude instances
         var outputCards = function($cards, list, boards, includeList, excludeList) {
 
             $.each(list, function(board) {
@@ -120,6 +124,11 @@ var pmwikitrello = function() {
             for (var i = 0; i < $cards.length; i++) {
 
                 var $these = $($cards[i]);
+
+                // TODO: we're just replicating existing behavior
+                // here, we need to grab the unique include/exclude values for this element
+                // HOWEVER - the "$these" element is NOT the element that has those properties
+                // "$these" has been APPENDED TO the element we want....
 
                 getBoards(boards, $these, includeList, excludeList);
 
